@@ -1,10 +1,8 @@
 import SwiftUI
 
-// MARK: View
-
 struct ContentView: View {
     
-    // MARK: State
+    // MARK: @State vars
     
     @State var earthquakes : [Earthquake] = []
     @State var selection = Set<Earthquake.ID>()
@@ -13,7 +11,7 @@ struct ContentView: View {
     @State var editMode: EditMode = .inactive
     @State var selectMode: SelectMode = .inactive
     
-    // MARK: Content
+    // MARK: View
     
     var body: some View {
         
@@ -30,6 +28,7 @@ struct ContentView: View {
                 }
                 
             }
+            .listStyle(SidebarListStyle())
             .navigationTitle("Earthquakes")
             .toolbar(content: toolbarContent)
             .environment(\.editMode, $editMode)
@@ -39,8 +38,7 @@ struct ContentView: View {
         }
     }
     
-    // MARK: Actions
-    
+    // MARK: load()
     //Loads US earthquake data from the web into an array of earthquakes
     func load () -> ([Earthquake]) {
         
@@ -64,19 +62,26 @@ struct ContentView: View {
 
         for member in earthquakesTemp.features {
                 
-            let color: Color
-                
-            if (member.properties.mag > 2) {
-                    color = Color.red
-            } else if (member.properties.mag > 1) {
-                color = Color.yellow
-            } else {
-                color = Color.green
+            var color: Color {
+                switch member.properties.mag {
+                case 0..<1:
+                    return .green
+                case 1..<2:
+                    return .yellow
+                case 2..<3:
+                    return .orange
+                case 3..<5:
+                    return .red
+                case 5..<Double.greatestFiniteMagnitude:
+                    return .init(red: 0.8, green: 0.2, blue: 0.7)
+                default:
+                    return .gray
+                }
             }
                 
             let time = Date(milliseconds: member.properties.time)
                 
-            let earthquakeTemp = Earthquake(mag: String(format: "%.2f", member.properties.mag),
+            let earthquakeTemp = Earthquake(mag: String(format: "%.1f", member.properties.mag),
                                             place: member.properties.place,
                                             timeAgo: time.formatted(.relative(presentation: .named)),
                                             time: time.formatted(),
@@ -92,13 +97,12 @@ struct ContentView: View {
 
 }
 
-// MARK: Extensions
-
-//Builds the toolbar
+// MARK: @ToolbarContentBuilder
 extension ContentView {
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         
+        // MARK: SelectButton
         ToolbarItem(placement: .navigationBarLeading) {
             if editMode == .active {
                 SelectButton(mode: $selectMode) {
@@ -111,6 +115,7 @@ extension ContentView {
             }
         }
 
+        // MARK: EditButton
         ToolbarItem(placement: .navigationBarTrailing) {
             EditButton(editMode: $editMode) {
                 selection.removeAll()
@@ -121,6 +126,7 @@ extension ContentView {
 
         ToolbarItemGroup(placement: .bottomBar) {
             
+            // MARK: RefreshButton
             Button(action: {
                 earthquakes = load()
                 updatedAt = Date()
@@ -130,6 +136,7 @@ extension ContentView {
 
             Spacer()
             
+            // MARK: Text
             VStack {
                 
                 Text("Updated \(updatedAt.formatted(.relative(presentation: .named)))")
@@ -137,15 +144,17 @@ extension ContentView {
                 Text("\(earthquakes.count) Earthquakes")
                     .foregroundStyle(Color.secondary)
                 
-            }
+            }.font(.caption)
             
             Spacer()
 
+            // MARK: DeleteButton
             if editMode == .active {
                 Button(action: {
                     selection.forEach { objectID in
                         earthquakes.removeAll(where: {$0.id == objectID})
                     }
+                    selection = []
                     editMode = .inactive
                 }) {
                     Image(systemName: "trash")
@@ -157,6 +166,7 @@ extension ContentView {
     }
 }
 
+// MARK: Date extension
 //Converts the millisecond epoch used in the .geojson to the microsecond epoch used by Swift
 extension Date {
     init(milliseconds: Int64) {

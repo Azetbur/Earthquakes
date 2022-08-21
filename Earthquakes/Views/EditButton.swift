@@ -26,6 +26,7 @@ struct EditButton: View {
     }
 }
 
+// MARK: Preview
 struct EditButton_Previews: PreviewProvider {
     static var previews: some View {
         EditButton(editMode: .constant(.inactive))

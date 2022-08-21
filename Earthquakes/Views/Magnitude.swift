@@ -11,16 +11,19 @@ struct Magnitude: View {
     var earthquake: Earthquake
     
     var body: some View {
-        Text(earthquake.mag)
-            .font(.title2)
-            .fontWeight(.bold)
-            .padding()
-            .background(Color.primary)
-            .cornerRadius(10)
-            .foregroundColor(earthquake.color)
+        RoundedRectangle(cornerRadius: 8)
+            .fill(.black)
+            .frame(width: 80, height: 60)
+            .overlay {
+                Text(earthquake.mag)
+                    .font(.title)
+                    .bold()
+                    .foregroundStyle(earthquake.color)
+            }
     }
 }
 
+// MARK: Preview
 struct Magnitude_Previews: PreviewProvider {
     static var previews: some View {
         Magnitude(earthquake: earthquakesMock[0])

@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+// MARK: Earthquake
 struct Earthquake: Hashable, Identifiable {
     
     var id: String{time} //id

@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: enum SelectMode
 enum SelectMode {
     case active, inactive
 
@@ -17,6 +18,7 @@ enum SelectMode {
     }
 }
 
+// MARK: SelectButton
 struct SelectButton: View {
     
     @Binding var mode: SelectMode
@@ -35,6 +37,7 @@ struct SelectButton: View {
     }
 }
 
+// MARK: Preview
 struct SelectButton_Previews: PreviewProvider {
     static var previews: some View {
         SelectButton(mode: .constant(.active))

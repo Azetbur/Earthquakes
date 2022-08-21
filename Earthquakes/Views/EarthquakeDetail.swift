@@ -6,8 +6,11 @@ struct EarthquakeDetail: View {
     var body: some View {
         VStack {
             
+            // MARK: Magnitude
             Magnitude(earthquake: earthquake)
             
+            
+            // MARK: Text
             Text(earthquake.place)
                 .font(.title3)
                 .fontWeight(.bold)
@@ -19,6 +22,7 @@ struct EarthquakeDetail: View {
     }
 }
 
+// MARK: Preview
 struct EarthquakeDetail_Previews: PreviewProvider {
     static var previews: some View {
         EarthquakeDetail(earthquake: earthquakesMock[0])

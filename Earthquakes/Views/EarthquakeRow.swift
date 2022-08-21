@@ -7,30 +7,25 @@ struct EarthquakeRow: View {
     var body: some View {
         HStack {
             
-            Spacer()
-            
+            // MARK: Magnitutde
             Magnitude(earthquake: earthquake)
             
-            VStack {
+            
+            // MARK: Text
+            VStack(alignment: .leading) {
                 
-                HStack {
-                    Text(earthquake.place)
-                        .font(.title3)
-                    Spacer()
-                }
+                Text(earthquake.place)
+                    .font(.title3)
                 
-                HStack {
-                    Text(earthquake.timeAgo)
-                        .foregroundStyle(Color.secondary)
-                    Spacer()
-                    
-                }
+                Text(earthquake.timeAgo)
+                    .foregroundStyle(Color.secondary)
                 
             }
-        }
+        }.padding(.vertical, 8)
     }
 }
 
+// MARK: Preview
 struct EarthquakeRow_Previews: PreviewProvider {
     static var previews: some View {
         EarthquakeRow(earthquake: earthquakesMock[0])
