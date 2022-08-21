@@ -21,7 +21,7 @@ struct EarthquakeRow: View {
                 
                 HStack {
                     Text(earthquake.timeAgo)
-                        .foregroundColor(Color.gray)
+                        .foregroundStyle(Color.secondary)
                     Spacer()
                     
                 }

@@ -1,46 +1,11 @@
 import Foundation
 import SwiftUI
 
-//For preview purposes ONLY
-let earthquakesMock = load()
+// MARK: Used in previews only
 
-//Used to convert the millisecond epoch used in the .geojson to the microsecond epoch used by Swift
-extension Date {
-    init(milliseconds: Int64) {
-        self = Date(timeIntervalSince1970: TimeInterval(milliseconds) / 1000)
-    }
-}
+var earthquakesMock = mockLoad()
 
-//Holds all earthquake data in a published array
-class EarthquakeHolder: ObservableObject {
-    
-    @Published var earthquakes: [Earthquake] = load()
-    
-    @Published var selection = Set<Earthquake.ID>()
-    
-    @Published var updatedAt = Date()
-    
-    @Published var time = Date()
-    
-    init () {
-        updatedAt = Date()
-    }
-    
-    func refresh () -> () {
-        earthquakes = load()
-        updatedAt = Date()
-    }
-    
-    func delete() {
-        selection.forEach { objectID in
-            earthquakes.removeAll(where: {$0.id == objectID})
-        }
-        
-    }
-}
-
-//Loads US earthquake data from the web into an array of earthquakes
-func load () -> ([Earthquake]) {
+func mockLoad () -> ([Earthquake]) {
     
     let data:Data
     
@@ -73,20 +38,18 @@ func load () -> ([Earthquake]) {
         }
             
         let time = Date(milliseconds: member.properties.time)
-        
-        let updated = Date(milliseconds: member.properties.updated)
             
         let earthquakeTemp = Earthquake(mag: String(format: "%.2f", member.properties.mag),
                                         place: member.properties.place,
                                         timeAgo: time.formatted(.relative(presentation: .named)),
                                         time: time.formatted(),
-                                        color: color,
-                                        updated: updated.formatted(.relative(presentation: .named)))
+                                        color: color)
         
         earthquakes.append(earthquakeTemp)
         
-        }
+    }
     
     return earthquakes
     
 }
+

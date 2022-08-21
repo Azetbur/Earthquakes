@@ -1,17 +1,25 @@
 import SwiftUI
 
+// MARK: View
+
 struct ContentView: View {
     
-    @StateObject var holder = EarthquakeHolder()
+    // MARK: State
     
-    @State private var editMode: EditMode = .inactive
+    @State var earthquakes : [Earthquake] = []
+    @State var selection = Set<Earthquake.ID>()
+    @State var updatedAt = Date()
     
-    @State private var selectMode: SelectMode = .inactive
+    @State var editMode: EditMode = .inactive
+    @State var selectMode: SelectMode = .inactive
+    
+    // MARK: Content
     
     var body: some View {
+        
         NavigationView {
-            List (selection: $holder.selection) {
-                ForEach (holder.earthquakes, id: \.id) {earthquake in
+            List (selection: $selection) {
+                ForEach (earthquakes) {earthquake in
     
                     NavigationLink {
                         EarthquakeDetail(earthquake: earthquake)
@@ -26,10 +34,67 @@ struct ContentView: View {
             .toolbar(content: toolbarContent)
             .environment(\.editMode, $editMode)
         }
+        .onAppear {
+            earthquakes = load()
+        }
     }
     
+    // MARK: Actions
+    
+    //Loads US earthquake data from the web into an array of earthquakes
+    func load () -> ([Earthquake]) {
+        
+        let data:Data
+        
+        do {
+           data  = try Data(contentsOf: URL(string: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson")!)
+        } catch {
+            fatalError("Could not download earthquake data. Are you connected to the internet? Is the url correct?\(error)")
+        }
+        
+        var earthquakes: [Earthquake] = []
+        
+        let earthquakesTemp: EarthquakeLoad
+        
+        do {
+            earthquakesTemp = try JSONDecoder().decode(EarthquakeLoad.self, from: data)
+        } catch {
+            fatalError("Could not process earthquake data. Is the url correct? Are the key names in EarthquakeLoad correct? Is the data structure in EarthquakeLoad correct?\(error)")
+        }
+
+        for member in earthquakesTemp.features {
+                
+            let color: Color
+                
+            if (member.properties.mag > 2) {
+                    color = Color.red
+            } else if (member.properties.mag > 1) {
+                color = Color.yellow
+            } else {
+                color = Color.green
+            }
+                
+            let time = Date(milliseconds: member.properties.time)
+                
+            let earthquakeTemp = Earthquake(mag: String(format: "%.2f", member.properties.mag),
+                                            place: member.properties.place,
+                                            timeAgo: time.formatted(.relative(presentation: .named)),
+                                            time: time.formatted(),
+                                            color: color)
+            
+            earthquakes.append(earthquakeTemp)
+            
+            }
+        
+        return earthquakes
+        
+    }
+
 }
 
+// MARK: Extensions
+
+//Builds the toolbar
 extension ContentView {
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
@@ -38,9 +103,9 @@ extension ContentView {
             if editMode == .active {
                 SelectButton(mode: $selectMode) {
                     if selectMode.isActive {
-                        holder.selection = Set(holder.earthquakes.map { $0.id })
+                        selection = Set(earthquakes.map { $0.id })
                     } else {
-                        holder.selection = []
+                        selection = []
                     }
                 }
             }
@@ -48,7 +113,7 @@ extension ContentView {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             EditButton(editMode: $editMode) {
-                holder.selection.removeAll()
+                selection.removeAll()
                 editMode = .inactive
                 selectMode = .inactive
             }
@@ -57,7 +122,8 @@ extension ContentView {
         ToolbarItemGroup(placement: .bottomBar) {
             
             Button(action: {
-                holder.refresh()
+                earthquakes = load()
+                updatedAt = Date()
             }) {
                 Image(systemName: "arrow.clockwise")
             }.disabled(editMode == .active)
@@ -66,9 +132,9 @@ extension ContentView {
             
             VStack {
                 
-                Text("Updated \(holder.updatedAt.formatted(.relative(presentation: .named)))")
+                Text("Updated \(updatedAt.formatted(.relative(presentation: .named)))")
                 
-                Text("\(holder.earthquakes.count) Earthquakes")
+                Text("\(earthquakes.count) Earthquakes")
                     .foregroundStyle(Color.secondary)
                 
             }
@@ -77,17 +143,28 @@ extension ContentView {
 
             if editMode == .active {
                 Button(action: {
-                    holder.delete()
+                    selection.forEach { objectID in
+                        earthquakes.removeAll(where: {$0.id == objectID})
+                    }
                     editMode = .inactive
                 }) {
                     Image(systemName: "trash")
-                }.disabled(holder.selection.isEmpty)
+                }.disabled(selection.isEmpty)
             }
             
             
         }
     }
 }
+
+//Converts the millisecond epoch used in the .geojson to the microsecond epoch used by Swift
+extension Date {
+    init(milliseconds: Int64) {
+        self = Date(timeIntervalSince1970: TimeInterval(milliseconds) / 1000)
+    }
+}
+
+// MARK: Preview
 
 struct LandmarkList_Previews: PreviewProvider {
     static var previews: some View {

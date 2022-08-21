@@ -16,10 +16,9 @@
 		DB4897E828A278E100E85934 /* EarthquakesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4897E728A278E100E85934 /* EarthquakesUITestsLaunchTests.swift */; };
 		DB48980028A4144500E85934 /* EarthquakeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4897FF28A4144400E85934 /* EarthquakeRow.swift */; };
 		DB76123A28B1104100FF1A55 /* Earthquake.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76123928B1104100FF1A55 /* Earthquake.swift */; };
-		DB76123C28B1104300FF1A55 /* EarthquakeLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76123B28B1104300FF1A55 /* EarthquakeLoad.swift */; };
-		DB76123E28B1104700FF1A55 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76123D28B1104700FF1A55 /* ModelData.swift */; };
 		DB76124028B1146200FF1A55 /* SelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76123F28B1146200FF1A55 /* SelectButton.swift */; };
 		DB76124228B12B5700FF1A55 /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76124128B12B5700FF1A55 /* EditButton.swift */; };
+		DB76124428B1542E00FF1A55 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB76124328B1542E00FF1A55 /* Mock.swift */; };
 		DBA74BAD28A416740005673E /* EarthquakeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA74BAC28A416740005673E /* EarthquakeDetail.swift */; };
 		DBA74BAF28A423040005673E /* Magnitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA74BAE28A423040005673E /* Magnitude.swift */; };
 /* End PBXBuildFile section */
@@ -54,10 +53,9 @@
 		DB4897E728A278E100E85934 /* EarthquakesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakesUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		DB4897FF28A4144400E85934 /* EarthquakeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeRow.swift; sourceTree = "<group>"; };
 		DB76123928B1104100FF1A55 /* Earthquake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Earthquake.swift; sourceTree = "<group>"; };
-		DB76123B28B1104300FF1A55 /* EarthquakeLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeLoad.swift; sourceTree = "<group>"; };
-		DB76123D28B1104700FF1A55 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		DB76123F28B1146200FF1A55 /* SelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButton.swift; sourceTree = "<group>"; };
 		DB76124128B12B5700FF1A55 /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
+		DB76124328B1542E00FF1A55 /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		DBA74BAC28A416740005673E /* EarthquakeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeDetail.swift; sourceTree = "<group>"; };
 		DBA74BAE28A423040005673E /* Magnitude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Magnitude.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -160,9 +158,8 @@
 		DB76123828B1103000FF1A55 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DB76123D28B1104700FF1A55 /* ModelData.swift */,
-				DB76123B28B1104300FF1A55 /* EarthquakeLoad.swift */,
 				DB76123928B1104100FF1A55 /* Earthquake.swift */,
+				DB76124328B1542E00FF1A55 /* Mock.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -301,12 +298,11 @@
 				DB4897CD28A278DF00E85934 /* ContentView.swift in Sources */,
 				DB76124228B12B5700FF1A55 /* EditButton.swift in Sources */,
 				DB76124028B1146200FF1A55 /* SelectButton.swift in Sources */,
-				DB76123C28B1104300FF1A55 /* EarthquakeLoad.swift in Sources */,
 				DB76123A28B1104100FF1A55 /* Earthquake.swift in Sources */,
 				DB48980028A4144500E85934 /* EarthquakeRow.swift in Sources */,
-				DB76123E28B1104700FF1A55 /* ModelData.swift in Sources */,
 				DB4897CB28A278DF00E85934 /* EarthquakesApp.swift in Sources */,
 				DBA74BAD28A416740005673E /* EarthquakeDetail.swift in Sources */,
+				DB76124428B1542E00FF1A55 /* Mock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

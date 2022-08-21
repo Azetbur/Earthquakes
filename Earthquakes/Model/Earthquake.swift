@@ -1,18 +1,11 @@
-//
-//  Earthquake.swift
-//  Earthquakes
-//
-//  Created by Jindrich Kocman on 10.08.2022.
-//
-
 import Foundation
 import SwiftUI
 
 struct Earthquake: Hashable, Identifiable {
     
-    var id: String{time}
+    var id: String{time} //id
     
-    let mag: String // (e.g. 2.2)
+    let mag: String // (magnitude, e.g. 2.2)
     
     let place: String // (e.g. 22km ESE of Anza, CA)
    
@@ -22,6 +15,20 @@ struct Earthquake: Hashable, Identifiable {
     
     let color: Color // Color of the font displaying the earthquake magnitude
     
-    let updated: String
-    
 }
+
+// MARK: ONLY for decoding .geojson
+
+struct EarthquakeLoad: Decodable {
+    let features: [EarthquakeFeaturesLoad]
+}
+struct EarthquakeFeaturesLoad: Decodable {
+    let properties: EarthquakeFeaturePropertiesLoad
+}
+struct EarthquakeFeaturePropertiesLoad: Decodable {
+    let mag: Double
+    let place: String
+    let time: Int64
+    let updated: Int64
+}
+

@@ -15,7 +15,7 @@ struct Magnitude: View {
             .font(.title2)
             .fontWeight(.bold)
             .padding()
-            .background(Color.black)
+            .background(Color.primary)
             .cornerRadius(10)
             .foregroundColor(earthquake.color)
     }

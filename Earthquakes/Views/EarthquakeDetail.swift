@@ -1,10 +1,3 @@
-//
-//  EarthquakeDetail.swift
-//  Earthquakes
-//
-//  Created by Jindrich Kocman on 10.08.2022.
-//
-
 import SwiftUI
 
 struct EarthquakeDetail: View {
@@ -20,7 +13,7 @@ struct EarthquakeDetail: View {
                 .fontWeight(.bold)
             
             Text(earthquake.time)
-                .foregroundColor(Color.gray)
+                .foregroundStyle(Color.secondary)
             
         }
     }
